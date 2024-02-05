@@ -1,0 +1,27 @@
+body,
+html {
+  background: #f0f0f0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#content {
+  background-image: url('grid.png');
+  background-repeat: repeat;
+  line-height: 20px;
+}
+
+.block {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#block-1 {
+  background-color: #f00;
+  width: 20px;
+}
+
+#block-2 {
+  background-color: #0f0;
+  /* display: block; */
+  width: 500px;
+}
