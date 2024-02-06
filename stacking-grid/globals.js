@@ -1,0 +1,1 @@
+const gridSize = 20;

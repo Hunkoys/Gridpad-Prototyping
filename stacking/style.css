@@ -7,21 +7,24 @@ html {
   align-items: center;
 }
 
-#content {
+.page {
   background-image: url('grid.png');
   background-repeat: repeat;
   line-height: 20px;
-  width: 600px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
+  /* min-height: 100px; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: text;
+  /* width: 600px; */
+  display: grid;
+  /* grid-template-columns: repeat(30, 20px); */
+  grid-auto-rows: minmax(20px, min-content);
 }
 
 .block {
   display: inline-block;
   outline: 1px solid red;
   /* vertical-align: top; */
-  position: relative;
+  /* position: relative; */
 }
 
 #block-1 {

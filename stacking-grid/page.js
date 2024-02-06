@@ -1,5 +1,3 @@
-const gridSize = 20;
-
 let debounceTimeout;
 function updatePageHeight(page, height) {
   function debounce(func, delay) {
@@ -28,9 +26,7 @@ document.querySelector('.bottom-edge').addEventListener('mouseover', function (e
   var bottomEdge = rect.bottom;
   var mouseY = event.clientY;
 
-  if (mouseY >= bottomEdge - 5) {
-    setVerticalResizeCursor();
-  }
+  setVerticalResizeCursor();
   // console.log('bottomEdge:', bottomEdge);
 });
 

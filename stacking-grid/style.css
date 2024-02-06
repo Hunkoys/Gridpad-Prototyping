@@ -19,7 +19,7 @@ body {
   align-items: start;
   margin: 20px;
   min-height: 100px;
-  height: fit-content;
+  /* height: fit-content; */
   width: 600px;
   background-image: url('../stacking/grid.png');
   background-repeat: repeat;
@@ -30,12 +30,14 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   line-height: 20px;
   transition: height 0.5s;
-  border-bottom: 5px solid #646464;
+  border-bottom: 5px solid #30303094;
 }
 
 .page > .bottom-edge {
   height: 5px;
   width: 100%;
+  position: relative;
+  top: 5px;
   /* background: red; */
   grid-column: 1 / span all;
   grid-row: -1;
@@ -54,19 +56,19 @@ body {
 #block-2 {
   background: blue;
   grid-column: 1 / span 10;
-  grid-row: 3 / span 2;
+  /* grid-row: 3 / span 2; */
 }
 
 #block-3 {
   background: green;
   grid-column: 14 / span 5;
-  grid-row: 3;
+  /* grid-row: 3; */
 }
 
 #block-4 {
   background: yellow;
   grid-column: 14 / span 10;
-  grid-row: 4;
+  /* grid-row: 4; */
 }
 
 #block-6 {
