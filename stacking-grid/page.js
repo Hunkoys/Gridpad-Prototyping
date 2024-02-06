@@ -13,7 +13,7 @@ function updatePageHeight(page, height) {
 
     page.style.height = rows * gridSize + 'px';
     // console.log('rows:', rows);
-    page.style.gridTemplateRows = `repeat(${rows}, ${gridSize}px) auto`;
+    page.style.gridTemplateRows = `repeat(${rows}, ${gridSize}px)`;
 
     page.rows = rows;
   }, 10);
@@ -72,3 +72,5 @@ document.querySelector('.bottom-edge').addEventListener('mouseup', function () {
   document.body.style.cursor = 'default';
   // console.log('mouseup');
 });
+
+updatePageHeight(document.querySelector('.page'), 100);
