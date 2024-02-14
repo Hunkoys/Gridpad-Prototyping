@@ -28,8 +28,26 @@ html {
 }
 
 #block-1 {
-  background-color: #f00;
+  position: relative;
+  background-color: rgb(235, 124, 124);
   width: 100px;
+}
+
+.grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  height: 100%;
+  width: 10px;
+  color: #fff;
+  text-align: center;
+  cursor: ew-resize;
+  display: none;
+}
+
+.block-resizable > .grip {
+  display: inline-block;
 }
 
 #block-2 {
