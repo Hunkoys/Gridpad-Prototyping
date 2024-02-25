@@ -1,7 +1,15 @@
 import ElementWrapperAbstract from '../util/elementWrapperAbstract';
-import './page.scss';
+import './section.scss';
 
-export default class Page extends ElementWrapperAbstract {
+function stringifyTemplate(template) {
+  return template.join(' ');
+}
+
+export default class Section extends ElementWrapperAbstract {
+  #gridTemplateRows = {};
+  #gridTemplateColumns = {};
+  blocks = null; // Note: this could live in LayoutEngine
+
   constructor(gridSize, width, height) {
     super();
     this.el = document.createElement('div');
@@ -11,24 +19,24 @@ export default class Page extends ElementWrapperAbstract {
     this.el.style.backgroundSize = `${gridSize}px ${gridSize}px`;
 
     this.gridSize = gridSize;
+    this.width = width;
+    this.height = height;
   }
 
   get gridTemplateRows() {
-    return this.el.style.gridTemplateRows;
+    return this.#gridTemplateRows;
   }
 
   set gridTemplateRows(value) {
-    this.el.style.gridTemplateRows = value;
+    this.el.style.gridTemplateRows = stringifyTemplate(value);
   }
 
   get gridTemplateColumns() {
-    return this.el.style.gridTemplateColumns;
+    return this.#gridTemplateColumns;
   }
 
   set gridTemplateColumns(value) {
-    console.log(value);
-    this.el.style.gridTemplateColumns = value;
-    console.log(this.el.style.gridTemplateColumns);
+    this.el.style.gridTemplateColumns = stringifyTemplate(value);
   }
 }
 

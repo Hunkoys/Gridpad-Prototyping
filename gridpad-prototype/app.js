@@ -1,5 +1,5 @@
 import Block from './app/block/block';
-import Page from './app/page/page';
+import Section from './app/section/section';
 import './app/util/fonts.css';
 import layoutEngine from './app/util/layoutEngine';
 import mouseTracker from './app/util/mouseTracker';
@@ -9,65 +9,56 @@ const app = document.getElementById('app');
 
 const defaultGridSize = 20;
 
-const page1 = new Page(defaultGridSize, 30, 50);
-
-const block1 = new Block();
-block1.gridSize = defaultGridSize;
-
-block1.el.innerText = `Inside this rule, youve added a font-family property with a value of "Fira Sans" in quotes. Since this code is defining an overall font-family, only one font name should be used. The comma separated list of font formats for src is two parted. The `;
-
-const block2 = new Block();
-block2.gridSize = defaultGridSize;
-
-block2.el.innerText = `another block`;
-
-layoutEngine.move(block1, page1, 2, 2);
-layoutEngine.move(block2, page1, 5, 5);
-
-block1.el.style.gridArea = 'block1';
-block2.el.style.gridArea = 'block2';
-
-block1.el.style.gridArea = '';
-block2.el.style.gridArea = '';
-
-const templateColumns = ['220px', '40px', '220px', 'auto'];
-const templateRows = [`minmax(${defaultGridSize}px, min-content)`];
-
-page1.el.style.gridTemplateColumns = templateColumns.join(' ');
-page1.el.style.gridTemplateRows = templateRows.join(' ');
-
-block1.el.style.gridColumnStart = 3;
-block1.el.style.gridRowStart = 2;
-block1.el.style.gridColumnEnd = 4;
-
-block2.el.style.gridColumnStart = 1;
-block2.el.style.gridColumnEnd = 3;
-block2.el.style.gridRowStart = 1;
-block2.el.style.gridRowEnd = 3;
-
-// block1.el.style.gridColumn = '2 / 3';
-// block1.el.style.gridRow = '2 / 3';
-// block2.el.style.gridColumn = '1 / 2';
-// block2.el.style.gridRow = '1 / 3';
-
-// page1.el.style.gridAutoRows = `${defaultGridSize}px`;
-
-// mouseTracker.addListener((event) => {
-//   console.table(event);
-// });
-
-// layout.move(block1, page1, 0, 0);
-
-// moveBlock(block1, page1, 0, 0);
-// moveBlock(block1, null, 0, 0);
-
+const page1 = new Section(defaultGridSize, 30, 50);
 app.appendChild(page1.el);
+
+// Simulate page load
+setTimeout(() => {
+  // simulate clicked empty space at 2, 2
+  const block1 = new Block(defaultGridSize);
+  // layoutEngine.move(block1, page1, { left: 2, top: 2 });
+  // simulate typed in block 1
+  block1.el.innerText = `block 1, Inside this rule, youve added a font-family property with a value of "Fira Sans" in quotes. Since this code is defining an overall font-family, only one font name should be used. The comma separated list of font formats for src is two parted. The `;
+
+  // simulate clicked empty space at 5, 5
+  const block2 = new Block(defaultGridSize);
+  // layoutEngine.move(block2, page1, { left: 5, top: 5 });
+  // simulate typed in block 2
+  block2.el.innerText = `block 2`;
+}, 0);
 
 const resizeObserver = new ResizeObserver((entries) => {
   for (const entry of entries) {
     const { contentRect, target } = entry;
-    console.log(contentRect, target);
+    console.log('contentRect', contentRect);
   }
 });
 
-resizeObserver.observe(block1.el);
+// const block1 = new Block(defaultGridSize);
+// const block2 = new Block(defaultGridSize);
+// const block3 = new Block(defaultGridSize);
+
+// block1.el.innerText = 'block 1';
+// block2.el.innerText = 'block 2';
+// block3.el.innerText = 'block 3';
+
+// page1.el.appendChild(block1.el);
+// page1.el.appendChild(block2.el);
+// page1.el.appendChild(block3.el);
+
+// page1.gridTemplateColumns = [
+//   `[${block1.id}-start ${block3.id}-start]`,
+//   `280px`,
+//   `[${block1.id}-end ]`,
+//   `40px`,
+//   `[${block3.id}-end ${block2.id}-start]`,
+//   `280px`,
+//   `[${block2.id}-end]`,
+// ];
+// page1.gridTemplateRows = [
+//   `[${block1.id}-start ${block2.id}-start]`,
+//   `min-content`,
+//   `[${block1.id}-end ${block3.id}-start]`,
+//   `min-content`,
+//   `[${block3.id}-end ${block2.id}-end]`,
+// ];

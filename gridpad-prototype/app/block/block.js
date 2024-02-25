@@ -2,13 +2,11 @@ import ElementWrapperAbstract from '../util/elementWrapperAbstract';
 import './block.scss';
 
 export default class Block extends ElementWrapperAbstract {
-  #grid = 18;
+  #gridSize;
 
   id = 'b' + String(Math.random()).substring(2);
-  width = 'max';
-  height = 'min';
 
-  constructor() {
+  constructor(gridSize = 18) {
     super();
     this.el = document.createElement('div');
     this.el.className = 'block';
@@ -18,15 +16,15 @@ export default class Block extends ElementWrapperAbstract {
 
     this.el.contentEditable = true;
 
-    this.gridSize = this.#grid;
+    this.gridSize = gridSize;
   }
 
   set gridSize(value) {
-    this.#grid = value;
+    this.#gridSize = value;
     this.el.style.lineHeight = `${value}px`;
   }
 
   get gridSize() {
-    return this.#grid;
+    return this.#gridSize;
   }
 }
