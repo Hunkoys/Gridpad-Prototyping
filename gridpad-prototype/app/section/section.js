@@ -41,7 +41,19 @@ export default class Section extends ElementWrapperAbstract {
   }
 
   add(block) {
+    // i need blocks to be sorted by their top then left
     this.blocks.push(block);
+    this.blocks = this.blocks.sort((a, b) => {
+      if (a.top === b.top) {
+        return a.left - b.left;
+      }
+      return a.top - b.top;
+    });
     this.el.appendChild(block.el);
+  }
+
+  remove(block) {
+    this.blocks = this.blocks.filter((b) => b !== block);
+    this.el.removeChild(block.el);
   }
 }

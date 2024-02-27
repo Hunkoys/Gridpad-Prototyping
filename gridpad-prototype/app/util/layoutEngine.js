@@ -20,14 +20,19 @@ class LayoutEngine {
     if (top) block.top = top;
     if (width) block.width = width;
     // check if block is already in the section
-    if (!section.blocks.includes(block)) {
+    if (block.section !== section) {
       this.add(block, section);
     }
     this.calculateGridLayout(section);
   }
 
   add(block, section) {
+    if (block.section) {
+      block.section.remove(block);
+    }
+    block.section = section;
     section.add(block);
+
     block.el._onResize = (contentRect) => {
       const gridHeight = Math.ceil(contentRect.height / section.gridSize);
       if (gridHeight !== block.height) {
@@ -35,13 +40,38 @@ class LayoutEngine {
         this.calculateGridLayout(section);
       }
     };
+
     resizeObserver.observe(block.el);
   }
 
   calculateGridLayout(section) {
-    // blocks that grow downwards should push blocks below themn down if they collide or overlap
+    // blocks that grow downwards should push blocks below them down if they collide or overlap
     // We need to iterate through the blocks and calculate weather any block is colliding with another
     // If it is then we need to push the block below it down
+
+    // We'll use a broad phase collision detection to find what blocks are close to each other
+    // Then we'll use a narrow phase collision detection to find out if they are actually colliding
+    // If they are then we'll push the block below it down to it's bottom
+
+    console.log('star', section.blocks.length);
+
+    for (const block of section.blocks) {
+      console.log(block);
+    }
+
+    for (let a = 0; a < section.blocks.length; a++) {
+      for (let b = a + 1; b < section.blocks.length; b++) {
+        const A = section.blocks[a];
+        const B = section.blocks[b];
+        if (A.right > B.left && A.left < B.right) {
+          if (A.bottom > B.top && A.top < B.bottom) {
+            // A is colliding with B
+            // We need to push B down
+            B.top = A.bottom;
+          }
+        }
+      }
+    }
 
     // This whole sub-section can be extracted into `genereateGridTemplate` method.
     // This relies on the fact that js sorts it's keys in order if they are numbers
@@ -81,61 +111,3 @@ class LayoutEngine {
 }
 
 export default new LayoutEngine();
-
-// // CASE 2: There is a page but block is in it
-// if (page.el.contains(block.el)) {
-//   // We can implement the check in the LL
-//   // See if anything changed
-//   // micro optimization
-
-//   // Rough checking, we can do a more precise check later
-//   let delta = 0;
-//   delta += left === block.left ? 0 : 1;
-//   delta += top === block.top ? 0 : 1;
-//   delta += right === block.right ? 0 : 1;
-//   delta += bottom === block.bottom ? 0 : 1;
-
-//   if (delta === 0) return;
-
-//   this.calculateLayout(page);
-// }
-// // CASE 3: There is a page and block is NOT in it
-// else {
-//   // Calculate the width of the block
-//   // then Place the block in the DOM for height calculation
-//   // then run the layout calculation
-
-//   let existingBlock = page.blocks;
-//   let right = right === 'max' ? page.width; // We could account for margin later
-
-//   while (existingBlock) {
-//     if (existingBlock.top > top || existingBlock.bottom <= top) {
-//       existingBlock = existingBlock.next;
-//       continue;
-//     }
-//     right = Math.min(right, existingBlock.x);
-//   }
-
-//   let w = right - x;
-
-//   if (w > 0) {
-//     if (existingBlock.width === -1) {
-//       existingBlock.width = w;
-//       resizeObserver.observe(existingBlock.el);
-//       const next = page.blocks;
-//       page.blocks = existingBlock;
-//       existingBlock.next = next;
-//     }
-//   }
-
-//   existingBlock.el._onResize = (contentRect) => {
-//     // Only going to be used for the height
-
-//     const newHeight = Math.ceil(contentRect.height / page.gridSize);
-
-//     if (newHeight !== existingBlock.height) {
-//       existingBlock.height = newHeight;
-//       this.calculateLayout(page);
-//     }
-//   };
-// }

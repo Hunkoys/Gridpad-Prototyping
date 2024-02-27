@@ -26,6 +26,8 @@ setTimeout(() => {
   layoutEngine.move(block2, page1, { left: 5, top: 2 });
   // simulate typed in block 2
   block2.el.innerText = `block 2`;
+
+  layoutEngine.move(block1, page1, { width: 3 });
 }, 0);
 
 // const block1 = new Block(defaultGridSize);

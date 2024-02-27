@@ -16,3 +16,6 @@ You might need to do this first:
 cd gridpad-prototype
 ```
 
+## Figma
+
+[Figma](https://www.figma.com/file/XWAth6OtxTlNiZjVfGLQln/Gridpad-Prototyping?type=design&node-id=0%3A1&mode=design&t=CjFeYEeGkSm5X7m7-1)
