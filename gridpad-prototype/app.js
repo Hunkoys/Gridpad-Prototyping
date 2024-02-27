@@ -15,24 +15,18 @@ app.appendChild(page1.el);
 // Simulate page load
 setTimeout(() => {
   // simulate clicked empty space at 2, 2
-  const block1 = new Block(defaultGridSize);
-  // layoutEngine.move(block1, page1, { left: 2, top: 2 });
+  // get available width
+  const block1 = new Block(defaultGridSize, 3);
+  layoutEngine.move(block1, page1, { left: 2, top: 2 });
   // simulate typed in block 1
-  block1.el.innerText = `block 1, Inside this rule, youve added a font-family property with a value of "Fira Sans" in quotes. Since this code is defining an overall font-family, only one font name should be used. The comma separated list of font formats for src is two parted. The `;
+  block1.el.innerText = `Block 1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk`;
 
   // simulate clicked empty space at 5, 5
-  const block2 = new Block(defaultGridSize);
-  // layoutEngine.move(block2, page1, { left: 5, top: 5 });
+  const block2 = new Block(defaultGridSize, 4);
+  layoutEngine.move(block2, page1, { left: 5, top: 2 });
   // simulate typed in block 2
   block2.el.innerText = `block 2`;
 }, 0);
-
-const resizeObserver = new ResizeObserver((entries) => {
-  for (const entry of entries) {
-    const { contentRect, target } = entry;
-    console.log('contentRect', contentRect);
-  }
-});
 
 // const block1 = new Block(defaultGridSize);
 // const block2 = new Block(defaultGridSize);

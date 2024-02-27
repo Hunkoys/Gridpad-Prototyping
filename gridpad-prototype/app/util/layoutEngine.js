@@ -5,27 +5,9 @@ const resizeObserver = new ResizeObserver((entries) => {
   }
 });
 
-// .move will be our interface to move the block.
-// its role is to move the block if it can't be/is not in the page and remove the observer if present
-// else, it will just give the block to the page.
-// it will check if the block has a min height,
-// in which case we attach a resize observer if it's not already attached
-// if not then just trigger .calculateLayout
-// .calculateLayout will calculate the layout of the page
-// It is responsible for calculating the grid rows and columns
-
-// The resize observer is to ensure full control of the block's height.
-// It should always be divisible by the grid size.
-
-// blocks have a left, top, right, bottom and are always numbers
-
 class LayoutEngine {
-  // if right is max then we calculate if there are any blocks to the right and use the most space
-  // if any other fields is empty then don't change block's value
-  // left and top should be absolute numbers
-
-  move(block, section, { left, top, right, bottom }) {
-    // The any of the sides is undefined then the value should be the same as the block
+  move(block, section, { left, top, width }) {
+    // height is calculated by the resize observer
 
     // CASE 1: There is no page
     if (!section) {
@@ -34,39 +16,67 @@ class LayoutEngine {
       return;
     }
 
-    // CASE 2: There is a page
-    // section.blocks is a linked list with the blocks in it.
-
-    // if right is not defined then we'll calculate how far it could go. If there is a block on the right, stop there, if not, use up to the edge of the section minus the margin
-    // if bottom is not defined the just use 1 if the block doesn't contain anything, else
-    // if the requested size and position is occupied in section.blocks then keep don't place the block in section.
-    // also remove resize observer
-    // else, add the block in the section.blocks
-    // and add the resize observer
-
-    // if it's not allowed, then block should stay positioned absolutely
-
-    // else,
+    if (left) block.left = left;
+    if (top) block.top = top;
+    if (width) block.width = width;
+    // check if block is already in the section
+    if (!section.blocks.includes(block)) {
+      this.add(block, section);
+    }
+    this.calculateGridLayout(section);
   }
 
-  calculateLayout(page) {
-    // page.blocks will be a linked list of blocks
-    // I need to go through the list and find where I need to put a grid column
-    // They will be where the block Starts and ends
-    // I also need to get the grid rows, but I only need to know where the blocks starts and not where it ends
-    // All of the values are going to Divisible by grid size
-    // The block will automatically grow vertically by it's content
-    // So I need to find the next block that will collide with it below
-    // and set that block's grid start row as the block's end row
-    // If it doesn't collide with the block below it, then we don't need to put a grid end row
+  add(block, section) {
+    section.add(block);
+    block.el._onResize = (contentRect) => {
+      const gridHeight = Math.ceil(contentRect.height / section.gridSize);
+      if (gridHeight !== block.height) {
+        block.height = gridHeight;
+        this.calculateGridLayout(section);
+      }
+    };
+    resizeObserver.observe(block.el);
+  }
 
-    // Let's try using a map to store the grid rows and columns
-    //
+  calculateGridLayout(section) {
+    // blocks that grow downwards should push blocks below themn down if they collide or overlap
+    // We need to iterate through the blocks and calculate weather any block is colliding with another
+    // If it is then we need to push the block below it down
 
-    const blockLeft = Math.floor(block.x * page.gridSize);
-    const blockTop = Math.floor(block.y * page.gridSize);
-    const blockRight = Math.ceil((block.x + block.width) * page.gridSize);
-    const blockBottom = Math.ceil((block.y + block.height) * page.gridSize);
+    // This whole sub-section can be extracted into `genereateGridTemplate` method.
+    // This relies on the fact that js sorts it's keys in order if they are numbers
+    const rowNames = {};
+    const colNames = {};
+
+    for (const block of section.blocks) {
+      if (!colNames[block.left]) colNames[block.left] = '';
+      if (!colNames[block.right]) colNames[block.right] = '';
+      if (!rowNames[block.top]) rowNames[block.top] = '';
+      if (!rowNames[block.bottom]) rowNames[block.bottom] = '';
+
+      colNames[block.left] += `${block.id}-start `;
+      colNames[block.right] += `${block.id}-end `;
+      rowNames[block.top] += `${block.id}-start `;
+      rowNames[block.bottom] += `${block.id}-end `;
+    }
+
+    let gridTemplateColumns = [];
+    let gridTemplateRows = [];
+    let last = 0;
+    for (const column in colNames) {
+      const width = Number(column) - last;
+      last = Number(column);
+      gridTemplateColumns.push(`${width * section.gridSize}px [ ${colNames[column]}]`);
+    }
+    last = 0;
+    for (const row in rowNames) {
+      const height = Number(row) - last;
+      last = Number(row);
+      gridTemplateRows.push(`${height * section.gridSize}px [ ${rowNames[row]}]`);
+    }
+
+    section.gridTemplateColumns = gridTemplateColumns;
+    section.gridTemplateRows = gridTemplateRows;
   }
 }
 

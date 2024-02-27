@@ -5,10 +5,11 @@ function stringifyTemplate(template) {
   return template.join(' ');
 }
 
+// Rename to container
 export default class Section extends ElementWrapperAbstract {
   #gridTemplateRows = {};
   #gridTemplateColumns = {};
-  blocks = null; // Note: this could live in LayoutEngine
+  blocks = []; // Note: this could live in LayoutEngine
 
   constructor(gridSize, width, height) {
     super();
@@ -38,7 +39,9 @@ export default class Section extends ElementWrapperAbstract {
   set gridTemplateColumns(value) {
     this.el.style.gridTemplateColumns = stringifyTemplate(value);
   }
-}
 
-// page.style.gridTemplateColumns = `repeat(${width / gridSize}, ${gridSize}px)`;
-// page.style.gridTemplateRows = `repeat(${height / gridSize}, ${gridSize}px)`;
+  add(block) {
+    this.blocks.push(block);
+    this.el.appendChild(block.el);
+  }
+}

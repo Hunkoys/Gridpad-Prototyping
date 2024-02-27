@@ -6,7 +6,7 @@ export default class Block extends ElementWrapperAbstract {
 
   id = 'b' + String(Math.random()).substring(2);
 
-  constructor(gridSize = 18) {
+  constructor(gridSize = 18, width = 1, height = 1) {
     super();
     this.el = document.createElement('div');
     this.el.className = 'block';
@@ -17,6 +17,8 @@ export default class Block extends ElementWrapperAbstract {
     this.el.contentEditable = true;
 
     this.gridSize = gridSize;
+    this.width = width;
+    this.height = height;
   }
 
   set gridSize(value) {
@@ -26,5 +28,13 @@ export default class Block extends ElementWrapperAbstract {
 
   get gridSize() {
     return this.#gridSize;
+  }
+
+  get right() {
+    return this.left + this.width;
+  }
+
+  get bottom() {
+    return this.top + this.height;
   }
 }
