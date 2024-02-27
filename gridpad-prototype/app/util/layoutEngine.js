@@ -45,28 +45,12 @@ class LayoutEngine {
   }
 
   calculateGridLayout(section) {
-    // blocks that grow downwards should push blocks below them down if they collide or overlap
-    // We need to iterate through the blocks and calculate weather any block is colliding with another
-    // If it is then we need to push the block below it down
-
-    // We'll use a broad phase collision detection to find what blocks are close to each other
-    // Then we'll use a narrow phase collision detection to find out if they are actually colliding
-    // If they are then we'll push the block below it down to it's bottom
-
-    console.log('star', section.blocks.length);
-
-    for (const block of section.blocks) {
-      console.log(block);
-    }
-
     for (let a = 0; a < section.blocks.length; a++) {
       for (let b = a + 1; b < section.blocks.length; b++) {
         const A = section.blocks[a];
         const B = section.blocks[b];
         if (A.right > B.left && A.left < B.right) {
           if (A.bottom > B.top && A.top < B.bottom) {
-            // A is colliding with B
-            // We need to push B down
             B.top = A.bottom;
           }
         }
