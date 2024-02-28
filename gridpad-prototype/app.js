@@ -36,17 +36,27 @@ const dimensions = {
 })();
 
 (function CLICK() {
-  app.addEventListener('click', (e) => {
+  app.addEventListener('mousedown', (e) => {
     if (e.target.classList.contains('section')) {
-      const block = new Block(defaultGridSize, 5);
+      const section = e.target._block;
       const gridX = Math.floor(e.offsetX / defaultGridSize);
       const gridY = Math.floor(e.offsetY / defaultGridSize);
+
+      // Check distance from right block/wall
+      let width = section.width - gridX;
+      const height = 1; // Could be a param if we decide to extract this to a function
+      for (const block of section.blocks) {
+        const hasBlockToTheRight = gridY + height > block.top && gridY < block.bottom && gridX < block.left;
+        if (hasBlockToTheRight) {
+          width = Math.min(width, block.left - gridX);
+        }
+      }
+
+      const block = new Block(defaultGridSize, width, height);
       layoutEngine.move(block, e.target._block, {
         left: gridX,
         top: gridY,
       });
-
-      block.el.focus();
     }
   });
 })();

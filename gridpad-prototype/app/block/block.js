@@ -39,4 +39,8 @@ export default class Block extends ElementWrapperAbstract {
   get bottom() {
     return this.top + this.height;
   }
+
+  focus() {
+    setTimeout(() => this.el.focus(), 0);
+  }
 }
