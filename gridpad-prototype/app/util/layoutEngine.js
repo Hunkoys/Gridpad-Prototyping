@@ -17,9 +17,9 @@ class LayoutEngine {
       return;
     }
 
-    if (left) block.left = left;
-    if (top) block.top = top;
-    if (width) block.width = width;
+    if (left !== undefined) block.left = left;
+    if (top !== undefined) block.top = top;
+    if (width !== undefined) block.width = width;
     // check if block is already in the section
     if (block.section !== section) {
       this.add(block, section);
@@ -27,7 +27,6 @@ class LayoutEngine {
     this.calculateGridLayout(section);
 
     n++;
-    console.log(section.blocks, n);
   }
 
   add(block, section) {
@@ -42,7 +41,6 @@ class LayoutEngine {
       if (gridHeight !== block.height) {
         block.height = gridHeight;
         this.debounceCalculateGridLayout(section);
-        console.log('resize', block.height);
       }
     };
 
@@ -77,6 +75,10 @@ class LayoutEngine {
     const colNames = {};
 
     for (const block of section.blocks) {
+      if (block.minHeight) block.height = Math.max(block.minHeight, block.height);
+
+      console.log(block.id, block.bottom);
+
       if (!colNames[block.left]) colNames[block.left] = '';
       if (!colNames[block.right]) colNames[block.right] = '';
       if (!rowNames[block.top]) rowNames[block.top] = '';

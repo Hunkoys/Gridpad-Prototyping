@@ -11,7 +11,6 @@ export default class Block extends ElementWrapperAbstract {
     this.el = document.createElement('div');
     this.el.className = 'block';
     this.el.style.gridArea = this.id;
-    this.el.style.alignSelf = 'start';
     this.el.id = this.id;
 
     this.el.contentEditable = true;
@@ -19,6 +18,9 @@ export default class Block extends ElementWrapperAbstract {
     this.gridSize = gridSize;
     this.width = width;
     this.height = height;
+    this.minHeight = height;
+
+    this.el._block = this;
   }
 
   set gridSize(value) {

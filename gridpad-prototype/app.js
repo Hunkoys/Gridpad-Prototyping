@@ -3,53 +3,57 @@ import Section from './app/section/section';
 import './app/util/fonts.css';
 import layoutEngine from './app/util/layoutEngine';
 import mouseTracker from './app/util/mouseTracker';
-import './style.css';
+import './style.scss';
 
 const app = document.getElementById('app');
 
 const defaultGridSize = 20;
 
-// Simulate page load
-setTimeout(simulate, 0);
+const dimensions = {
+  width: 30,
+  height: 40,
+};
 
-// const block1 = new Block(defaultGridSize);
-// const block2 = new Block(defaultGridSize);
-// const block3 = new Block(defaultGridSize);
+(function BUTTON() {
+  const canvas = new Section(defaultGridSize);
+  app.appendChild(canvas.el);
 
-// block1.el.innerText = 'block 1';
-// block2.el.innerText = 'block 2';
-// block3.el.innerText = 'block 3';
+  const addPageButton = document.createElement('button');
+  addPageButton.innerText = 'Add Page';
 
-// page1.el.appendChild(block1.el);
-// page1.el.appendChild(block2.el);
-// page1.el.appendChild(block3.el);
+  function createSection(defaultGridSize, width, height) {
+    const section = new Section(defaultGridSize, width, height);
+    section.el.classList.add('page');
+    section.el.style.minHeight = `${height * defaultGridSize}px`;
+    return section;
+  }
 
-// page1.gridTemplateColumns = [
-//   `[${block1.id}-start ${block3.id}-start]`,
-//   `280px`,
-//   `[${block1.id}-end ]`,
-//   `40px`,
-//   `[${block3.id}-end ${block2.id}-start]`,
-//   `280px`,
-//   `[${block2.id}-end]`,
-// ];
-// page1.gridTemplateRows = [
-//   `[${block1.id}-start ${block2.id}-start]`,
-//   `min-content`,
-//   `[${block1.id}-end ${block3.id}-start]`,
-//   `min-content`,
-//   `[${block3.id}-end ${block2.id}-end]`,
-// ];
+  addPageButton.onclick = () => {
+    const page = createSection(defaultGridSize, dimensions.width, dimensions.height);
+    layoutEngine.move(page, canvas, { left: 0, top: 0 });
+  };
+  app.appendChild(addPageButton);
+})();
 
-const page1 = new Section(defaultGridSize, 30, 50);
-app.appendChild(page1.el);
+(function CLICK() {
+  app.addEventListener('click', (e) => {
+    if (e.target.classList.contains('section')) {
+      const block = new Block(defaultGridSize, 5);
+      layoutEngine.move(block, e.target._block, { left: 5, top: 5 });
+    }
+  });
+})();
 
+// simulate();
 function simulate() {
   // simulate clicked empty space at 2, 2
   // // get available width
 
+  const page1 = new Section(defaultGridSize, 30, 50);
+  app.appendChild(page1.el);
+
   const block1 = new Block(defaultGridSize, 3);
-  layoutEngine.move(block1, page1, { left: 2, top: 2, width: 4 });
+  layoutEngine.move(block1, page1, { left: 2, top: 2, width: 3 });
   // // simulate typed in block 1
   block1.el.innerText = `Block 1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk`;
 
@@ -62,4 +66,8 @@ function simulate() {
   const block3 = new Block(defaultGridSize, 3);
   layoutEngine.move(block3, page1, { left: 5, top: 10 });
   block3.el.innerText = `block 3`;
+
+  // layoutEngine.move(block3, page1, { left: 6, top: 5 });
+
+  layoutEngine.move(block1, page1, { width: 3 });
 }

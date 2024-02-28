@@ -1,11 +1,15 @@
-.page {
+.section {
   display: grid;
-  background: rgb(223, 210, 196);
-  background-image: url('/grid.png');
-  border-radius: 8px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
 
   font-family: 'Alpa Renote', sans-serif;
   font-size: 17px;
   letter-spacing: 0.7px;
+  align-items: start;
+}
+
+.page {
+  background: rgb(223, 210, 196);
+  background-image: url('/grid.png');
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
 }

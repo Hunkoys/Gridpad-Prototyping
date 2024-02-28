@@ -1,4 +1,4 @@
-import ElementWrapperAbstract from '../util/elementWrapperAbstract';
+import Block from '../block/block';
 import './section.scss';
 
 function stringifyTemplate(template) {
@@ -6,22 +6,19 @@ function stringifyTemplate(template) {
 }
 
 // Rename to container
-export default class Section extends ElementWrapperAbstract {
+// Also create a common class with Block called Element.
+
+export default class Section extends Block {
   #gridTemplateRows = {};
   #gridTemplateColumns = {};
   blocks = []; // Note: this could live in LayoutEngine
 
   constructor(gridSize, width, height) {
-    super();
-    this.el = document.createElement('div');
-    this.el.className = 'page';
-    this.el.style.width = `${width * gridSize}px`;
-    this.el.style.minHeight = `${height * gridSize}px`;
+    super(gridSize, width, height);
+    this.el.classList.add('section');
     this.el.style.backgroundSize = `${gridSize}px ${gridSize}px`;
 
-    this.gridSize = gridSize;
-    this.width = width;
-    this.height = height;
+    this.el.contentEditable = false;
   }
 
   get gridTemplateRows() {
