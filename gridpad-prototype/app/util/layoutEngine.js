@@ -77,7 +77,7 @@ class LayoutEngine {
     for (const block of section.blocks) {
       if (block.minHeight) block.height = Math.max(block.minHeight, block.height);
 
-      console.log(block.id, block.bottom);
+      // console.log(block.id, block.bottom);
 
       if (!colNames[block.left]) colNames[block.left] = '';
       if (!colNames[block.right]) colNames[block.right] = '';

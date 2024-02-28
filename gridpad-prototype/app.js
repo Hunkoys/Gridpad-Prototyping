@@ -39,7 +39,14 @@ const dimensions = {
   app.addEventListener('click', (e) => {
     if (e.target.classList.contains('section')) {
       const block = new Block(defaultGridSize, 5);
-      layoutEngine.move(block, e.target._block, { left: 5, top: 5 });
+      const gridX = Math.floor(e.offsetX / defaultGridSize);
+      const gridY = Math.floor(e.offsetY / defaultGridSize);
+      layoutEngine.move(block, e.target._block, {
+        left: gridX,
+        top: gridY,
+      });
+
+      block.el.focus();
     }
   });
 })();
