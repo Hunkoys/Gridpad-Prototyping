@@ -5,6 +5,7 @@ const resizeObserver = new ResizeObserver((entries) => {
   }
 });
 
+let n = 0;
 class LayoutEngine {
   move(block, section, { left, top, width }) {
     // height is calculated by the resize observer
@@ -24,6 +25,9 @@ class LayoutEngine {
       this.add(block, section);
     }
     this.calculateGridLayout(section);
+
+    n++;
+    console.log(section.blocks, n);
   }
 
   add(block, section) {
@@ -37,11 +41,21 @@ class LayoutEngine {
       const gridHeight = Math.ceil(contentRect.height / section.gridSize);
       if (gridHeight !== block.height) {
         block.height = gridHeight;
-        this.calculateGridLayout(section);
+        this.debounceCalculateGridLayout(section);
+        console.log('resize', block.height);
       }
     };
 
     resizeObserver.observe(block.el);
+  }
+  debounceId = null;
+  debounceCalculateGridLayout(section) {
+    if (this.debounceId) {
+      clearTimeout(this.debounceId);
+    }
+    this.debounceId = setTimeout(() => {
+      this.calculateGridLayout(section);
+    }, 20);
   }
 
   calculateGridLayout(section) {
