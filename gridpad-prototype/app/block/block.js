@@ -4,11 +4,10 @@ import './block.scss';
 export default class Block extends ElementWrapperAbstract {
   #gridSize;
   section = null;
-  value = '';
 
   id = 'b' + String(Math.random()).substring(2);
 
-  constructor(gridSize = 18, width = 1, height = 1) {
+  constructor(gridSize = 18, width = 1, height = 1, value = '') {
     super();
     this.el = document.createElement('div');
     this.el.className = 'block';
@@ -16,13 +15,10 @@ export default class Block extends ElementWrapperAbstract {
     this.el.id = this.id;
 
     this.el.contentEditable = true;
-    this.el.addEventListener('keyup', (e) => {
-      console.log('value is empty', e.target.textContent);
-      this.value = e.target.textContent;
-    });
+    this.el.innerText = value;
+
     this.el.addEventListener('blur', (e) => {
-      console.log('deleting block', this.value);
-      if (this.value === '') {
+      if (this.el.innerText.trim() === '') {
         this.section.remove(this);
       }
     });
@@ -52,7 +48,13 @@ export default class Block extends ElementWrapperAbstract {
     return this.top + this.height;
   }
 
-  focus() {
-    setTimeout(() => this.el.focus(), 0);
+  focus(type = 'end') {
+    setTimeout(() => {
+      this.el.focus();
+      const selection = window.getSelection();
+      if (type == 'start') selection.collapseToStart();
+      else if (type == 'end') selection.collapseToEnd();
+      else if (type == 'all') selection.selectAllChildren(this.el);
+    }, 0);
   }
 }

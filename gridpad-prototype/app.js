@@ -44,14 +44,7 @@ const dimensions = {
       const gridY = Math.floor(e.offsetY / defaultGridSize);
 
       // Check distance from right block/wall
-      let width = section.width - gridX;
-      const height = 1; // Could be a param if we decide to extract this to a function
-      for (const block of section.blocks) {
-        const hasBlockToTheRight = gridY + height > block.top && gridY < block.bottom && gridX < block.left;
-        if (hasBlockToTheRight) {
-          width = Math.min(width, block.left - gridX);
-        }
-      }
+      let { width, height } = checkRight(section, gridX, gridY);
 
       const block = new Block(defaultGridSize, width, height);
       layoutEngine.move(block, e.target._block, {
@@ -61,6 +54,56 @@ const dimensions = {
     }
   });
 })();
+
+let selectedText = '';
+
+(function DRAG() {
+  addEventListener('dragstart', (e) => {
+    const selection = window.getSelection();
+    if (selection.type === 'Range') {
+      selectedText = selection.toString();
+    }
+  });
+
+  app.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+
+  app.addEventListener('drop', (e) => {
+    e.preventDefault();
+    // Delete the current selection
+    const selection = window.getSelection();
+    selection.deleteFromDocument();
+
+    // Create a new block with the selection
+    const gridX = Math.floor(e.offsetX / defaultGridSize);
+    const gridY = Math.floor(e.offsetY / defaultGridSize);
+
+    let section = e.target._block;
+    let { width, height } = checkRight(section, gridX, gridY);
+
+    const block = new Block(defaultGridSize, width, height, selectedText);
+    block.focus('all');
+    selectedText = ''; // We can select the newly added element
+
+    layoutEngine.move(block, section, {
+      left: gridX,
+      top: gridY,
+    });
+  });
+})();
+
+function checkRight(section, gridX, gridY) {
+  let width = section.width - gridX;
+  const height = 1; // Could be a param
+  for (const block of section.blocks) {
+    const hasBlockToTheRight = gridY + height > block.top && gridY < block.bottom && gridX < block.left;
+    if (hasBlockToTheRight) {
+      width = Math.min(width, block.left - gridX);
+    }
+  }
+  return { width, height };
+}
 
 // simulate();
 function simulate() {
