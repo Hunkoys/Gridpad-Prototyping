@@ -16,5 +16,7 @@
 }
 
 .canvas {
+  display: grid;
   gap: 30px;
+  align-items: start;
 }

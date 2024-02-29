@@ -16,7 +16,7 @@ const dimensions = {
 
 (function BUTTON() {
   const canvas = new Section(defaultGridSize);
-  canvas.el.classList.add('canvas');
+  canvas.el.className = 'canvas';
   app.appendChild(canvas.el);
 
   const addPageButton = document.createElement('button');
@@ -66,10 +66,13 @@ let selectedText = '';
   });
 
   app.addEventListener('dragover', (e) => {
-    e.preventDefault();
+    if (e.target.classList.contains('section')) e.preventDefault();
   });
 
   app.addEventListener('drop', (e) => {
+    if (!e.target.classList.contains('section')) return;
+
+    let section = e.target._block;
     e.preventDefault();
     // Delete the current selection
     const selection = window.getSelection();
@@ -79,7 +82,6 @@ let selectedText = '';
     const gridX = Math.floor(e.offsetX / defaultGridSize);
     const gridY = Math.floor(e.offsetY / defaultGridSize);
 
-    let section = e.target._block;
     let { width, height } = checkRight(section, gridX, gridY);
 
     const block = new Block(defaultGridSize, width, height, selectedText);
