@@ -78,8 +78,6 @@ class LayoutEngine {
       // if (block.minHeight) block.height = Math.max(block.minHeight, block.height);
       // moved to block.js
 
-      // console.log(block.id, block.bottom);
-
       if (!colNames[block.left]) colNames[block.left] = '';
       if (!colNames[block.right]) colNames[block.right] = '';
       if (!rowNames[block.top]) rowNames[block.top] = '';
@@ -100,7 +98,6 @@ class LayoutEngine {
       if (width > 0) {
         gridTemplateColumns.push(`${width * section.gridSize}px`);
       }
-      // ${width * section.gridSize}px
       gridTemplateColumns.push(`[ ${colNames[column]}]`);
     }
     last = 0;

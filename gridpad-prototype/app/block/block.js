@@ -26,7 +26,7 @@ export default class Block extends ElementWrapperAbstract {
     this.gridSize = gridSize;
     this.width = width;
     this.height = height;
-    this.maxWidth = 'none';
+    this.maxWidth = Infinity;
     this.minHeight = height;
 
     this.el._block = this;
@@ -42,7 +42,8 @@ export default class Block extends ElementWrapperAbstract {
   }
 
   get right() {
-    return this.left + this.width;
+    const right = this.left + this.width;
+    return Math.min(right, this.maxWidth);
   }
 
   get bottom() {
