@@ -96,13 +96,20 @@ class LayoutEngine {
     for (const column in colNames) {
       const width = Number(column) - last;
       last = Number(column);
-      gridTemplateColumns.push(`${width * section.gridSize}px [ ${colNames[column]}]`);
+      if (width > 0) {
+        gridTemplateColumns.push(`${width * section.gridSize}px`);
+      }
+      // ${width * section.gridSize}px
+      gridTemplateColumns.push(`[ ${colNames[column]}]`);
     }
     last = 0;
     for (const row in rowNames) {
       const height = Number(row) - last;
       last = Number(row);
-      gridTemplateRows.push(`${height * section.gridSize}px [ ${rowNames[row]}]`);
+      if (height > 0) {
+        gridTemplateRows.push(`${height * section.gridSize}px`);
+      }
+      gridTemplateRows.push(`[ ${rowNames[row]}]`);
     }
 
     section.gridTemplateColumns = gridTemplateColumns;

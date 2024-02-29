@@ -3,6 +3,8 @@ import './block.scss';
 
 export default class Block extends ElementWrapperAbstract {
   #gridSize;
+  section = null;
+  value = '';
 
   id = 'b' + String(Math.random()).substring(2);
 
@@ -14,6 +16,16 @@ export default class Block extends ElementWrapperAbstract {
     this.el.id = this.id;
 
     this.el.contentEditable = true;
+    this.el.addEventListener('keyup', (e) => {
+      console.log('value is empty', e.target.textContent);
+      this.value = e.target.textContent;
+    });
+    this.el.addEventListener('blur', (e) => {
+      console.log('deleting block', this.value);
+      if (this.value === '') {
+        this.section.remove(this);
+      }
+    });
 
     this.gridSize = gridSize;
     this.width = width;

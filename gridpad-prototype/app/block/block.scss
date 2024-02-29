@@ -1,5 +1,18 @@
 .block {
-  outline: 1px solid #000; /* For debugging purposes */
+  $highlight: #1ba790b6;
+  // outline: 1px solid #000; /* For debugging purposes */
+
+  border-radius: 4px;
+
+  &:hover {
+    // outline: 1px solid #1ba78f;
+    box-shadow: inset 0 0 0 1px $highlight;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px $highlight;
+  }
 
   &-free {
     position: absolute;

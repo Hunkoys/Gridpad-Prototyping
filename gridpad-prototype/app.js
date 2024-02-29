@@ -16,6 +16,7 @@ const dimensions = {
 
 (function BUTTON() {
   const canvas = new Section(defaultGridSize);
+  canvas.el.classList.add('canvas');
   app.appendChild(canvas.el);
 
   const addPageButton = document.createElement('button');
