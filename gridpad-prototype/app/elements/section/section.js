@@ -39,6 +39,7 @@ export default class Section extends Block {
 
   add(block) {
     // i need blocks to be sorted by their top then left
+
     this.blocks.push(block);
     this.blocks = this.blocks.sort((a, b) => {
       if (a.top === b.top) {
@@ -47,10 +48,12 @@ export default class Section extends Block {
       return a.top - b.top;
     });
     this.el.appendChild(block.el);
+    block.section = this;
   }
 
   remove(block) {
     this.blocks = this.blocks.filter((b) => b !== block);
     this.el.removeChild(block.el);
+    block.section = null;
   }
 }

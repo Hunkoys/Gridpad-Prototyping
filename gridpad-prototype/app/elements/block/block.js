@@ -17,11 +17,7 @@ export default class Block extends ElementWrapperAbstract {
     this.el.contentEditable = true;
     this.el.innerText = value;
 
-    this.el.addEventListener('blur', (e) => {
-      if (this.el.innerText.trim() === '') {
-        this.section.remove(this);
-      }
-    });
+    this.el.addEventListener('blur', (e) => this.checkContent());
 
     this.gridSize = gridSize;
     this.width = width;
@@ -30,6 +26,12 @@ export default class Block extends ElementWrapperAbstract {
     this.minHeight = height;
 
     this.el._block = this;
+  }
+
+  checkContent() {
+    if (this.el.innerText.trim() === '') {
+      this.section?.remove(this);
+    }
   }
 
   set gridSize(value) {

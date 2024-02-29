@@ -1,43 +1,58 @@
 import Block from '@/app/elements/block/block';
 import { checkRight } from '@/app/util/crowdChecker';
 import layoutEngine from '@/app/util/layoutEngine';
+import { closest } from '@/app/util/dom';
+import { SECTION } from '@/app/elements/classnames';
+
+function reset(data) {
+  data.selectedText = '';
+  data.sourceBlock = null;
+}
 
 export default function setupDrag({ app, defaultGridSize }) {
-  let selectedText = '';
+  const data = {};
+  reset(data);
 
   addEventListener('dragstart', (e) => {
     const selection = window.getSelection();
     if (selection.type === 'Range') {
-      selectedText = selection.toString();
+      data.selectedText = selection.toString();
+      console.log(e);
+      data.sourceBlock = closest(e.target, `.${SECTION}`)._block;
     }
   });
 
+  //   let element = document.getElementById('myElement');
+  // let parent = element.closest('.myClassName');
+
+  //   console.log(parent);
+
   app.addEventListener('dragover', (e) => {
-    if (e.target.classList.contains('section')) e.preventDefault();
+    if (e.target.classList.contains(SECTION)) e.preventDefault();
   });
 
   app.addEventListener('drop', (e) => {
-    if (!e.target.classList.contains('section')) return;
-
-    let section = e.target._block;
+    if (!e.target.classList.contains(SECTION)) return;
     e.preventDefault();
-    // Delete the current selection
-    const selection = window.getSelection();
-    selection.deleteFromDocument();
 
-    // Create a new block with the selection
-    const gridX = Math.floor(e.offsetX / defaultGridSize);
-    const gridY = Math.floor(e.offsetY / defaultGridSize);
+    const section = e.target._block;
+    window.getSelection().deleteFromDocument();
 
-    let { width, height } = checkRight(section, gridX, gridY);
+    const point = {
+      left: Math.floor(e.offsetX / defaultGridSize),
+      top: Math.floor(e.offsetY / defaultGridSize),
+    };
 
-    const block = new Block(defaultGridSize, width, height, selectedText);
+    const height = 1;
+    const width = checkRight(point, section);
+
+    const block = new Block(defaultGridSize, width, height, data.selectedText);
+
+    data.sourceBlock.checkContent();
+
+    layoutEngine.move(block, section, point);
     block.focus('all');
-    selectedText = ''; // We can select the newly added element
 
-    layoutEngine.move(block, section, {
-      left: gridX,
-      top: gridY,
-    });
+    reset(data);
   });
 }

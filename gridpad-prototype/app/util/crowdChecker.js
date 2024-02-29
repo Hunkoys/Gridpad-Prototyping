@@ -1,11 +1,12 @@
-export function checkRight(section, gridX, gridY) {
-  let width = section.width - gridX;
-  const height = 1; // Could be a param
+export function checkRight(point, section, height = 1) {
+  const { left, top } = point;
+
+  let width = section.width - left;
   for (const block of section.blocks) {
-    const hasBlockToTheRight = gridY + height > block.top && gridY < block.bottom && gridX < block.left;
+    const hasBlockToTheRight = top + height > block.top && top < block.bottom && left < block.left;
     if (hasBlockToTheRight) {
-      width = Math.min(width, block.left - gridX);
+      width = Math.min(width, block.left - left);
     }
   }
-  return { width, height };
+  return width;
 }

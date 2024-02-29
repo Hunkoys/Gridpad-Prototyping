@@ -1,3 +1,5 @@
+import { checkRight } from './crowdChecker';
+
 const resizeObserver = new ResizeObserver((entries) => {
   for (const entry of entries) {
     const { contentRect, target } = entry;
@@ -27,10 +29,7 @@ class LayoutEngine {
   }
 
   add(block, section) {
-    if (block.section) {
-      block.section.remove(block);
-    }
-    block.section = section;
+    block.section?.remove(block);
     section.add(block);
 
     block.el._onResize = (contentRect) => {
