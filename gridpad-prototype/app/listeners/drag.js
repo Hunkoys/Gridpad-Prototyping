@@ -37,10 +37,11 @@ export default function setupDrag({ app, defaultGridSize }) {
       top: Math.floor(e.offsetY / defaultGridSize),
     };
 
-    data.sourceBlock.checkContent();
+    const sourceWidth = data.sourceBlock.width;
+    const deleted = data.sourceBlock.checkContent();
 
     const height = 1;
-    const width = checkRight(point, section);
+    const width = deleted ? sourceWidth : checkRight(point, section);
 
     const block = new Block(defaultGridSize, width, height, data.selectedText);
 

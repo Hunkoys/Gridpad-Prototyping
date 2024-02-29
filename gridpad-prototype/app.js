@@ -1,8 +1,9 @@
+import '@/app.scss';
 import Section from '@/app/elements/section/section';
 import layoutEngine from '@/app/util/layoutEngine';
 import setupClick from '@/app/listeners/mouse';
 import setupDrag from '@/app/listeners/drag';
-import '@/app.scss';
+import setupFocus from '@/app/listeners/focus';
 
 const app = document.getElementById('app');
 
@@ -33,6 +34,7 @@ app.appendChild(addPageButton);
 
 setupClick(settings);
 setupDrag(settings);
+setupFocus(settings);
 
 function createPage(defaultGridSize, width, height) {
   const section = new Section(defaultGridSize, width, height);

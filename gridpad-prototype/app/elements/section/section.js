@@ -52,8 +52,10 @@ export default class Section extends Block {
   }
 
   remove(block) {
-    this.blocks = this.blocks.filter((b) => b !== block);
-    this.el.removeChild(block.el);
-    block.section = null;
+    if (block.section === this) {
+      block.section = null;
+      this.blocks = this.blocks.filter((b) => b !== block);
+      this.el.removeChild(block.el);
+    }
   }
 }
