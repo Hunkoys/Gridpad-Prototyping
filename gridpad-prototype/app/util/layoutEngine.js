@@ -33,11 +33,17 @@ class LayoutEngine {
     section.add(block);
 
     block.el._onResize = (contentRect) => {
-      const gridHeight = Math.ceil(contentRect.height / section.gridSize);
-      if (gridHeight !== block.height) {
-        block.height = gridHeight;
-        this.debounceCalculateGridLayout(section);
+      const availableWidth = checkRight(block, section);
+      console.log(availableWidth, block.width, block.id, block.el);
+      if (availableWidth !== block.width) {
+        block.width = availableWidth;
+      } else {
+        const gridHeight = Math.ceil(contentRect.height / section.gridSize);
+        if (gridHeight !== block.height) {
+          block.height = gridHeight;
+        }
       }
+      this.debounceCalculateGridLayout(section);
     };
 
     resizeObserver.observe(block.el);

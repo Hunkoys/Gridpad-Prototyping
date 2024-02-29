@@ -20,7 +20,7 @@ const settings = {
   pageSize,
 };
 
-const canvas = new Section(defaultGridSize);
+const canvas = new Section(defaultGridSize, pageSize.width, pageSize.height);
 canvas.el.className = 'canvas';
 app.appendChild(canvas.el);
 

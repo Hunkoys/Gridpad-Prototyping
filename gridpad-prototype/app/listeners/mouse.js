@@ -14,7 +14,8 @@ export default function setupClick({ app, defaultGridSize }) {
 
       // Check distance from right block/wall
       const height = 1;
-      const width = checkRight(point, section);
+      // const width = checkRight(point, section)
+      const width = 1;
 
       const block = new Block(defaultGridSize, width, height);
       layoutEngine.move(block, section, point);
