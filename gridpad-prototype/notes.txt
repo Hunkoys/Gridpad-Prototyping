@@ -66,3 +66,5 @@ block1
 
 
 container2
+
+Blocks should always be in a section so we can control it’s deletion in a single place in the code

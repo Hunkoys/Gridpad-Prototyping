@@ -1,3 +1,5 @@
+// this is dead code and only for reference
+
 const listeners = [];
 
 const MouseTracker = {
