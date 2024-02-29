@@ -17,7 +17,7 @@ export default class Block extends ElementWrapperAbstract {
     this.el.contentEditable = true;
     this.el.innerText = value;
 
-    this.el.addEventListener('blur', (e) => this.checkContent());
+    this.el.addEventListener('blur', () => this.checkContent());
 
     this.gridSize = gridSize;
     this.width = width;

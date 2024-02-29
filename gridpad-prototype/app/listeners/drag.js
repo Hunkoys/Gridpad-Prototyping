@@ -2,7 +2,7 @@ import Block from '@/app/elements/block/block';
 import { checkRight } from '@/app/util/crowdChecker';
 import layoutEngine from '@/app/util/layoutEngine';
 import { closest } from '@/app/util/dom';
-import { SECTION } from '@/app/elements/classnames';
+import { BLOCK, SECTION } from '@/app/elements/classnames';
 
 function reset(data) {
   data.selectedText = '';
@@ -17,15 +17,9 @@ export default function setupDrag({ app, defaultGridSize }) {
     const selection = window.getSelection();
     if (selection.type === 'Range') {
       data.selectedText = selection.toString();
-      console.log(e);
-      data.sourceBlock = closest(e.target, `.${SECTION}`)._block;
+      data.sourceBlock = closest(e.target, `.${BLOCK}`)._block;
     }
   });
-
-  //   let element = document.getElementById('myElement');
-  // let parent = element.closest('.myClassName');
-
-  //   console.log(parent);
 
   app.addEventListener('dragover', (e) => {
     if (e.target.classList.contains(SECTION)) e.preventDefault();
@@ -43,12 +37,12 @@ export default function setupDrag({ app, defaultGridSize }) {
       top: Math.floor(e.offsetY / defaultGridSize),
     };
 
+    data.sourceBlock.checkContent();
+
     const height = 1;
     const width = checkRight(point, section);
 
     const block = new Block(defaultGridSize, width, height, data.selectedText);
-
-    data.sourceBlock.checkContent();
 
     layoutEngine.move(block, section, point);
     block.focus('all');
