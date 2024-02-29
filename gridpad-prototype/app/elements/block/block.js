@@ -1,4 +1,4 @@
-import ElementWrapperAbstract from '../util/elementWrapperAbstract';
+import { ElementWrapperAbstract } from '@/app/util/dom';
 import './block.scss';
 
 export default class Block extends ElementWrapperAbstract {

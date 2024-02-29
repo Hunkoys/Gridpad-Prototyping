@@ -1,6 +1,6 @@
 import { checkRight } from '@/app/util/crowdChecker';
 import layoutEngine from '@/app/util/layoutEngine';
-import Block from '@/app/block/block';
+import Block from '@/app/elements/block/block';
 
 export default function setupClick({ app, defaultGridSize }) {
   app.addEventListener('mousedown', (e) => {

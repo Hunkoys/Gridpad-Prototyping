@@ -1,10 +1,8 @@
-import Block from './app/block/block';
-import setupDrag from './app/listeners/drag';
-import Section from './app/section/section';
-import layoutEngine from './app/util/layoutEngine';
-import './app/util/fonts.css';
-import './style.scss';
-import setupClick from './app/listeners/mouse';
+import Section from '@/app/elements/section/section';
+import layoutEngine from '@/app/util/layoutEngine';
+import setupClick from '@/app/listeners/mouse';
+import setupDrag from '@/app/listeners/drag';
+import '@/app.scss';
 
 const app = document.getElementById('app');
 
@@ -40,5 +38,6 @@ function createPage(defaultGridSize, width, height) {
   const section = new Section(defaultGridSize, width, height);
   section.el.classList.add('page');
   section.el.style.minHeight = `${height * defaultGridSize}px`;
+  181;
   return section;
 }

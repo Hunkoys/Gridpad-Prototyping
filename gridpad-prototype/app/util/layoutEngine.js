@@ -5,7 +5,6 @@ const resizeObserver = new ResizeObserver((entries) => {
   }
 });
 
-let n = 0;
 class LayoutEngine {
   move(block, section, { left, top, width }) {
     // height is calculated by the resize observer
@@ -25,8 +24,6 @@ class LayoutEngine {
       this.add(block, section);
     }
     this.calculateGridLayout(section);
-
-    n++;
   }
 
   add(block, section) {

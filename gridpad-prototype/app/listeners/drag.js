@@ -1,4 +1,4 @@
-import Block from '@/app/block/block';
+import Block from '@/app/elements/block/block';
 import { checkRight } from '@/app/util/crowdChecker';
 import layoutEngine from '@/app/util/layoutEngine';
 
