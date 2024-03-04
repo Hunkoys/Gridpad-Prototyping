@@ -45,7 +45,8 @@ export default class Block extends ElementWrapperAbstract {
 
   get right() {
     const right = this.left + this.width;
-    return Math.min(right, this.maxWidth);
+    const maxRight = this.left + this.maxWidth;
+    return Math.min(right, maxRight);
   }
 
   get bottom() {

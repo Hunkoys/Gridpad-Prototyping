@@ -44,6 +44,7 @@ export default function setupDrag({ app, defaultGridSize }) {
     const width = Math.min(sourceWidth, checkRight(point, section));
 
     const block = new Block(defaultGridSize, width, height, data.selectedText);
+    block.maxWidth = data.sourceBlock.maxWidth;
 
     layoutEngine.move(block, section, point);
     block.focus('all');

@@ -34,7 +34,7 @@ class LayoutEngine {
 
     block.el._onResize = (contentRect) => {
       const availableWidth = checkRight(block, section);
-      console.log(availableWidth, block.width, block.id, block.el);
+      // console.log(availableWidth, block.width, block.id, block.el);
       if (availableWidth !== block.width) {
         block.width = availableWidth;
       } else {
