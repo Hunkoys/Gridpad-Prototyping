@@ -9,7 +9,10 @@ function reset(data) {
   data.sourceBlock = null;
 }
 
-export default function setupDrag({ app, defaultGridSize }) {
+export default function setupDrag(layoutEngine) {
+  const settings = layoutEngine.settings;
+  const { app, defaultGridSize } = settings;
+
   const data = {};
   reset(data);
 
@@ -38,13 +41,12 @@ export default function setupDrag({ app, defaultGridSize }) {
     };
 
     const sourceWidth = data.sourceBlock.width;
-    const deleted = data.sourceBlock.checkContent();
 
     const height = 1;
-    const width = Math.min(sourceWidth, checkRight(point, section));
+    const width = 1;
 
     const block = new Block(defaultGridSize, width, height, data.selectedText);
-    block.maxWidth = data.sourceBlock.maxWidth;
+    block.fixedWidth = data.sourceBlock.fixedWidth;
 
     layoutEngine.move(block, section, point);
     block.focus('all');

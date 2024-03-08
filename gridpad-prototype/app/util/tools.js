@@ -12,3 +12,14 @@ export const debounce = (func, delay) => {
     }, delay);
   };
 };
+
+export function cooldown(time, func) {
+  let last = 0;
+  return (...args) => {
+    const now = Date.now();
+    if (now - last > time) {
+      last = now;
+      return func(...args);
+    }
+  };
+}

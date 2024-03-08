@@ -1,6 +1,6 @@
 import '@/app.scss';
 import Section from '@/app/elements/section/section';
-import layoutEngine from '@/app/util/layoutEngine';
+import LayoutEngine from '@/app/util/layoutEngine';
 import setupClick from '@/app/listeners/mouse';
 import setupDrag from '@/app/listeners/drag';
 import setupFocus from '@/app/listeners/focus';
@@ -15,10 +15,11 @@ const pageSize = {
 };
 
 const settings = {
-  app,
-  defaultGridSize,
   pageSize,
+  gap: 1,
 };
+
+const layoutEngine = new LayoutEngine(settings);
 
 const canvas = new Section(defaultGridSize, pageSize.width, pageSize.height);
 canvas.el.className = 'canvas';
@@ -32,9 +33,9 @@ addPageButton.onclick = () => {
 };
 app.appendChild(addPageButton);
 
-setupClick(settings);
-setupDrag(settings);
-setupFocus(settings);
+setupClick(layoutEngine);
+setupDrag(layoutEngine);
+setupFocus(layoutEngine);
 
 function createPage(defaultGridSize, width, height) {
   const section = new Section(defaultGridSize, width, height);

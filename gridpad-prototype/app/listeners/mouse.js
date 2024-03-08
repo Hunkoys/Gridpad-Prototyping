@@ -1,25 +1,22 @@
 import { checkRight } from '@/app/util/crowdChecker';
-import layoutEngine from '@/app/util/layoutEngine';
 import Block from '@/app/elements/block/block';
 
-export default function setupClick({ app, defaultGridSize }) {
+export default function setupClick(layoutEngine) {
+  const settings = layoutEngine.settings;
+  const { app, defaultGridSize } = settings;
+
   app.addEventListener(
     'mousedown',
     (e) => {
-      console.log('phase', e.eventPhase);
       if (e.ctrlKey) {
         e.preventDefault();
         if (document.activeElement.classList.contains('block')) {
-          console.log('lhell');
           const block = document.activeElement._block;
           const section = block.section;
           const sectionOffsetX = e.clientX - section.el.offsetLeft;
-          console.log('sectionOffsetX', sectionOffsetX);
-          console.log('block.left', block.left);
-          const maxWidth = Math.floor(sectionOffsetX / defaultGridSize) - (block.left - 1);
+          const fixedWidth = Math.floor(sectionOffsetX / defaultGridSize) - (block.left - 1);
 
-          console.log(maxWidth, block.width, e.target);
-          block.maxWidth = maxWidth;
+          block.fixedWidth = fixedWidth;
 
           layoutEngine.move(block, section, {});
         }
@@ -37,7 +34,6 @@ export default function setupClick({ app, defaultGridSize }) {
         const width = 1;
 
         const block = new Block(defaultGridSize, width, height);
-        block.maxWidth = checkRight(point, section);
         layoutEngine.move(block, section, point);
       }
     },

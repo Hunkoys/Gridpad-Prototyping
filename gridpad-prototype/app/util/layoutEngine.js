@@ -8,6 +8,10 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 class LayoutEngine {
+  constructor(settings) {
+    this.settings = settings;
+  }
+
   move(block, section, { left, top, width }) {
     // height is calculated by the resize observer
 
@@ -32,16 +36,13 @@ class LayoutEngine {
     block.section?.remove(block);
     section.add(block);
 
+    const availableWidth = checkRight(block, section);
+    block.width = availableWidth - this.settings.gap;
+
     block.el._onResize = (contentRect) => {
-      const availableWidth = checkRight(block, section);
-      // console.log(availableWidth, block.width, block.id, block.el);
-      if (availableWidth !== block.width) {
-        block.width = availableWidth;
-      } else {
-        const gridHeight = Math.ceil(contentRect.height / section.gridSize);
-        if (gridHeight !== block.height) {
-          block.height = gridHeight;
-        }
+      const gridHeight = Math.ceil(contentRect.height / section.gridSize);
+      if (gridHeight !== block.height) {
+        block.height = gridHeight;
       }
       this.debounceCalculateGridLayout(section);
     };
@@ -117,4 +118,4 @@ class LayoutEngine {
   }
 }
 
-export default new LayoutEngine();
+export default LayoutEngine;

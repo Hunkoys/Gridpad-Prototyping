@@ -1,21 +1,22 @@
-let l = [];
-
-const con = {
-  add: (block) => {
-    l.push(block);
-    block.con = con;
-  },
-  remove: (block) => {
-    l = l.filter((b) => b !== block);
-    block.con = null;
-  },
+export const debounce = (delay, func) => {
+  let timerId;
+  return (...args) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
 };
 
-class Block {}
+class Cow {
+  constructor(name) {
+    this.name = name;
+  }
+  eat = debounce(1000, () => {
+    console.log('eat', this.name);
+  });
+}
 
-const b1 = new Block();
-
-con.add(b1);
-con; //?
-
-b1.con?.remove(b1); //?
+const j = new Cow('sss');
+j.eat();
+const s = new Cow('ssss');
